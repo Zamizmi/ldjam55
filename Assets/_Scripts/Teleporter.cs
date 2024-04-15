@@ -12,9 +12,14 @@ public class Teleporter : BaseInteractable
 
     public override void Interact(Player player)
     {
-        player.SetSpriteLevel(targetTeleport.GetLayerTarget());
+        // player.SetSpriteLevel(targetTeleport.GetLayerTarget());
         player.transform.position = targetTeleport.GetTeleportTransform().position;
         player.SetSplineContainer(targetTeleport.GetTeleportSpline());
+    }
+
+    public void SetTargetTeleport(Teleporter teleport)
+    {
+        targetTeleport = teleport;
     }
 
     public Transform GetTeleportTransform()

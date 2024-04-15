@@ -6,6 +6,7 @@ public class SelectedInteractableVisual : MonoBehaviour
 {
     private BaseInteractable interactable;
     [SerializeField] private GameObject[] visualGameObjectArray;
+    private bool isActive = true;
 
     private void Start()
     {
@@ -13,15 +14,28 @@ public class SelectedInteractableVisual : MonoBehaviour
         interactable = GetComponent<BaseInteractable>();
     }
 
-    private void Player_OnSelectedInteractableChanged(object sender, Player.OnSelectedInteractableChangedEventArgs e)
+    public void SetIsActive(bool newBool)
     {
-        if (e.selectedInteractable == interactable)
-        {
-            Show();
-        }
-        else
+        isActive = newBool;
+        if (!newBool)
         {
             Hide();
+        }
+    }
+
+    private void Player_OnSelectedInteractableChanged(object sender, Player.OnSelectedInteractableChangedEventArgs e)
+    {
+        if (isActive)
+        {
+
+            if (e.selectedInteractable == interactable)
+            {
+                Show();
+            }
+            else
+            {
+                Hide();
+            }
         }
     }
 

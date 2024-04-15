@@ -30,8 +30,11 @@ public class Player : MonoBehaviour
     [SerializeField] private SpriteRenderer visualRender;
     [SerializeField] private BaseInteractable selectedInteractable;
     private Vector2 lastInteractionVector;
+    private Animator animator;
+    private bool isAlive;
     private void Update()
     {
+        if (!LevelManager.Instance.IsGameActive()) return;
         HandleMoving();
         HandleInteractions();
     }
@@ -49,6 +52,8 @@ public class Player : MonoBehaviour
     private void Start()
     {
         gameInput.OnInteractHandler += GameInput_OnInteractHandler;
+        animator = GetComponentInChildren<Animator>();
+        isAlive = true;
     }
 
     private void HandleInteractions()
@@ -86,7 +91,17 @@ public class Player : MonoBehaviour
         Vector2 inputVector = gameInput.GetMovementVectorNormalized();
         if (inputVector.x == 0)
         {
+            animator.SetBool("IsWalking", false);
             return;
+        }
+        animator.SetBool("IsWalking", true);
+        if (lastInteractionVector.x > 0)
+        {
+            visualRender.flipX = false;
+        }
+        else
+        {
+            visualRender.flipX = true;
         }
         float4 nearestAfterMovingX = new float4(inputVector.x, 0, 0, float.PositiveInfinity);
         NativeSpline native = new NativeSpline(splineContainer.Spline, splineContainer.transform.localToWorldMatrix);
@@ -121,5 +136,25 @@ public class Player : MonoBehaviour
     public void SetSpriteLevel(int newSpriteLevel)
     {
         visualRender.sortingOrder = newSpriteLevel;
+    }
+
+    public SplineContainer GetSplineContainer()
+    {
+        return splineContainer;
+    }
+
+    public void Killed()
+    {
+        if (isAlive)
+        {
+            LevelManager.Instance.PlayerKilled();
+        }
+    }
+
+    public void Revive(Transform location, SplineContainer newSpline)
+    {
+        isAlive = true;
+        transform.position = location.position;
+        SetSplineContainer(newSpline);
     }
 }
