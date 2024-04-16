@@ -17,9 +17,7 @@ public class BaseEnemy : MonoBehaviour
     private SpriteRenderer visualRender;
     [SerializeField] private bool isMoving = true;
     [SerializeField] private float speed;
-    [SerializeField] private float defaultTimeToChangeDecision = 2f;
-    [SerializeField] private float timeToChangeDecision;
-    [SerializeField] private float timeToChangeDecisionOffset;
+    [SerializeField] private float timeToChangeDecision = 1f;
     [SerializeField] private float decisionTimer = 0f;
     [SerializeField] private float noticeTimer = 0f;
     [SerializeField] private float noticeTime = 0.1f;
@@ -78,7 +76,6 @@ public class BaseEnemy : MonoBehaviour
     {
         animator = GetComponentInChildren<Animator>();
         visualRender = GetComponentInChildren<SpriteRenderer>();
-        timeToChangeDecision = defaultTimeToChangeDecision;
     }
 
     private void DecideDirection()
@@ -92,17 +89,16 @@ public class BaseEnemy : MonoBehaviour
 
         if (decisionTimer > timeToChangeDecision)
         {
-            float decision = UnityEngine.Random.Range(0, 8);
+            // 0, 1, 2
+            int decision = UnityEngine.Random.Range(0, 3);
             decisionTimer = 0f;
-            timeToChangeDecisionOffset = decision / 2;
-            timeToChangeDecision = defaultTimeToChangeDecision + timeToChangeDecisionOffset;
-            if (decision > 4)
+            if (decision == 2)
             {
                 isMoving = false;
                 return;
             }
-            else isMoving = true;
-            if (decision > 1)
+            isMoving = true;
+            if (decision == 1)
             {
                 directionToGo = true;
             }

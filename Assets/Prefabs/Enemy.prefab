@@ -191,12 +191,11 @@ MonoBehaviour:
   splineContainer: {fileID: 0}
   directionToGo: 0
   isMoving: 0
-  speed: 2.2
-  defaultTimeToChangeDecision: 2.5
-  timeToChangeDecision: 0
-  timeToChangeDecisionOffset: 0
+  speed: 2.3
+  timeToChangeDecision: 1
+  timeToChangeDecisionOffset: 1
   decisionTimer: 0
-  noticeTimer: 0
+  noticeTimer: 0.04
   noticeTime: 1.5
   canSeePlayer: 0
   timeToKillPlayer: 0.2

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Splines;
 
@@ -19,16 +20,8 @@ public class LevelManager : MonoBehaviour
         public State changedState;
     }
     public event EventHandler OnBeaconCountChanged;
-    public class OnBeaconCountChangedEventArgs : EventArgs
-    {
-        public int beaconCount;
-    }
 
     public event EventHandler OnLivesLeftChanged;
-    public class OnLivesLeftChangedEventArgs : EventArgs
-    {
-        public int livesLeft;
-    }
     public event EventHandler OnGamePaused;
     public event EventHandler OnGameUnpaused;
 
@@ -84,10 +77,7 @@ public class LevelManager : MonoBehaviour
         TogglePauseGame(false);
         HideStartBeacon();
         ProgressLevel();
-        OnLivesLeftChanged?.Invoke(this, new OnLivesLeftChangedEventArgs
-        {
-            livesLeft = this.livesLeft,
-        });
+        OnLivesLeftChanged?.Invoke(this, EventArgs.Empty);
     }
 
     private void HideStartBeacon()
@@ -98,11 +88,7 @@ public class LevelManager : MonoBehaviour
     // Made public so cut scenes can call this from animation events
     public void ProgressLevel()
     {
-        OnBeaconCountChanged?.Invoke(this, new OnBeaconCountChangedEventArgs
-        {
-            beaconCount = beaconsActive
-        });
-
+        OnBeaconCountChanged?.Invoke(this, EventArgs.Empty);
         gamePlayingTimer = gamePlayingTimerMax;
         LevelSetupSO nextLevel = levelSetups[currentLevel];
         foreach (BuildingLocationSO toSpawn in nextLevel.pinkObjectsToSpawn)
@@ -207,10 +193,13 @@ public class LevelManager : MonoBehaviour
     public void IncreaseActiveBeaconCount()
     {
         beaconsActive++;
-        OnBeaconCountChanged?.Invoke(this, new OnBeaconCountChangedEventArgs
+        if (beaconsActive % 3 == 0)
         {
-            beaconCount = beaconsActive
-        });
+            livesLeft++;
+            OnLivesLeftChanged?.Invoke(this, EventArgs.Empty);
+        }
+        OnBeaconCountChanged?.Invoke(this, EventArgs.Empty);
+
     }
 
     public float GetPlayingTimerNormalized()
@@ -260,10 +249,7 @@ public class LevelManager : MonoBehaviour
         {
 
             livesLeft--;
-            OnLivesLeftChanged?.Invoke(this, new OnLivesLeftChangedEventArgs
-            {
-                livesLeft = this.livesLeft,
-            });
+            OnLivesLeftChanged?.Invoke(this, EventArgs.Empty);
             if (livesLeft > 0)
             {
                 state = State.Respawning;
