@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelName: 1
   enemyPrefab: {fileID: 6461104883107517494, guid: 89663c4e7c64240e28373e8fa2c665b7, type: 3}
-  locationVector: {x: 4.4, y: -3.15, z: 0}
+  locationVector: {x: 0.6, y: -1.2, z: 0}
