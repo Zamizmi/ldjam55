@@ -34,7 +34,7 @@ public class Player : MonoBehaviour
     private bool isAlive;
     private void Update()
     {
-        if (!LevelManager.Instance.IsGameActive()) return;
+
         HandleMoving();
         HandleInteractions();
     }
@@ -52,12 +52,14 @@ public class Player : MonoBehaviour
     private void Start()
     {
         gameInput.OnInteractHandler += GameInput_OnInteractHandler;
+        gameInput.OnSelfKillAction += GameInput_OnSelfKillAction;
         animator = GetComponentInChildren<Animator>();
         isAlive = true;
     }
 
     private void HandleInteractions()
     {
+        if (!LevelManager.Instance.IsGameActive()) return;
         Vector2 inputVector = gameInput.GetMovementVectorNormalized();
         if (inputVector != Vector2.zero)
         {
@@ -86,8 +88,17 @@ public class Player : MonoBehaviour
 
     }
 
+
+    private void GameInput_OnSelfKillAction(object sender, EventArgs e)
+    {
+        // For debugging only
+        // if (!LevelManager.Instance.IsGameActive()) return;
+        // Killed();
+    }
+
     private void HandleMoving()
     {
+        if (!LevelManager.Instance.IsGameActive()) return;
         Vector2 inputVector = gameInput.GetMovementVectorNormalized();
         if (inputVector.x == 0)
         {

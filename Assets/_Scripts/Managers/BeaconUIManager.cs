@@ -21,7 +21,7 @@ public class BeaconUIManager : MonoBehaviour
 
     private void LevelManager_OnStateChanged(object sender, System.EventArgs e)
     {
-        if (LevelManager.Instance.IsGameActive())
+        if (LevelManager.Instance.IsGameActive() || LevelManager.Instance.IsRespawn())
         {
             Show();
         }

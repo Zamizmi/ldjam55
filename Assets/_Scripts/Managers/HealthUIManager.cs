@@ -11,6 +11,7 @@ public class HealthUIManager : MonoBehaviour
     private void Start()
     {
         LevelManager.Instance.OnStateChanged += LevelManager_OnStateChanged;
+        LevelManager.Instance.OnLivesLeftChanged += LevelManager_LivesLeftChanged;
         Hide();
     }
 
@@ -21,7 +22,7 @@ public class HealthUIManager : MonoBehaviour
 
     private void LevelManager_OnStateChanged(object sender, System.EventArgs e)
     {
-        if (LevelManager.Instance.IsGameActive())
+        if (LevelManager.Instance.IsGameActive() || LevelManager.Instance.IsRespawn())
         {
             Show();
         }
