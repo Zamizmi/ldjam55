@@ -162,6 +162,7 @@ public class Player : MonoBehaviour
     {
         if (isAlive)
         {
+            SetSelectedInteractable(null);
             isAlive = false;
             Hide();
             // spawn PUFF element
