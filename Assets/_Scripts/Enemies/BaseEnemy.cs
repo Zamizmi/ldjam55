@@ -24,6 +24,7 @@ public class BaseEnemy : MonoBehaviour
     [SerializeField] private bool canSeePlayer;
     [SerializeField] private float timeToKillPlayer = 0.2f;
     [SerializeField] private float timeDamagedPlayer;
+    [SerializeField] private GameObject statusIndicator;
 
 
     private void Update()
@@ -45,6 +46,7 @@ public class BaseEnemy : MonoBehaviour
             isMoving = false;
         }
         canSeePlayer = nowCanSeePlayer;
+        statusIndicator.SetActive(canSeePlayer);
     }
 
     private void OnTriggerStay2D(Collider2D other)

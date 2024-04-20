@@ -33,7 +33,7 @@ public class Player : MonoBehaviour
     private Vector2 lastInteractionVector;
     private Animator animator;
     private bool isAlive;
-    private bool canMove;
+    [SerializeField] private bool canMove;
     private void Update()
     {
 

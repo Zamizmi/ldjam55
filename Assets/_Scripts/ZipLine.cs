@@ -10,7 +10,6 @@ public class ZipLine : BaseInteractable
     [SerializeField] private SplineContainer startingSpline;
     [SerializeField] private SplineContainer endingSpline;
     [SerializeField] private SplineContainer zipSpline;
-    [SerializeField] private float maxZipSpeed = 5f;
     [SerializeField] private float zipSpeedIncrease = 0.01f;
     [SerializeField] private float zipProgress = 0;
     [SerializeField] private float jumpDistanceToEnd = .5f;
@@ -21,6 +20,7 @@ public class ZipLine : BaseInteractable
     {
         playerToZip = player;
         player.LockMovement();
+        zipProgress = 0;
     }
 
     private void Update()
@@ -51,5 +51,6 @@ public class ZipLine : BaseInteractable
         playerToZip.SetSplineContainer(endingSpline);
         playerToZip.AllowMovement();
         playerToZip = null;
+
     }
 }
