@@ -37,7 +37,7 @@ public class BaseEnemy : MonoBehaviour
     private void HandlePlayerFollowability()
     {
         float distanceToPlayer = (Player.Instance.gameObject.transform.position - transform.position).magnitude;
-        bool nowCanSeePlayer = Player.Instance.GetSplineContainer() == splineContainer && distanceToPlayer < eyeSight;
+        bool nowCanSeePlayer = Player.Instance.GetSplineContainer() == splineContainer && distanceToPlayer < eyeSight && Player.Instance.IsAlive();
         if (nowCanSeePlayer != canSeePlayer && canSeePlayer)
         {
             noticeTimer = 0f;
@@ -122,12 +122,7 @@ public class BaseEnemy : MonoBehaviour
             visualRender.flipX = true;
         }
         float directionX = directionToGo ? 1 : -1;
-        float4 nearestAfterMovingX = new float4(directionX, 0, 0, float.PositiveInfinity);
-        NativeSpline native = new NativeSpline(splineContainer.Spline, splineContainer.transform.localToWorldMatrix);
-        float d = SplineUtility.GetNearestPoint(native, transform.position + new Vector3(directionX * speed * Time.deltaTime, 0f, 0f), out float3 p, out float t);
-        if (d < nearestAfterMovingX.w)
-            nearestAfterMovingX = new float4(p, d);
-        transform.position = nearestAfterMovingX.xyz;
+        transform.position = BaseSplineMovement.GetNextPositionOnSpline(splineContainer, transform.position, directionX * speed);
     }
 
     public void SetSplineContainer(SplineContainer newSpline)

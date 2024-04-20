@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Splines;
+using Unity.Collections;
 
 public class Player : MonoBehaviour
 {
@@ -32,6 +33,7 @@ public class Player : MonoBehaviour
     private Vector2 lastInteractionVector;
     private Animator animator;
     private bool isAlive;
+    private bool canMove;
     private void Update()
     {
 
@@ -55,6 +57,7 @@ public class Player : MonoBehaviour
         gameInput.OnSelfKillAction += GameInput_OnSelfKillAction;
         animator = GetComponentInChildren<Animator>();
         isAlive = true;
+        canMove = true;
     }
 
     private void HandleInteractions()
@@ -98,6 +101,11 @@ public class Player : MonoBehaviour
 
     private void HandleMoving()
     {
+        if (!canMove)
+        {
+            animator.SetBool("IsWalking", false);
+            return;
+        }
         if (!LevelManager.Instance.IsGameActive()) return;
         Vector2 inputVector = gameInput.GetMovementVectorNormalized();
         if (inputVector.x == 0)
@@ -114,12 +122,8 @@ public class Player : MonoBehaviour
         {
             visualRender.flipX = true;
         }
-        float4 nearestAfterMovingX = new float4(inputVector.x, 0, 0, float.PositiveInfinity);
-        NativeSpline native = new NativeSpline(splineContainer.Spline, splineContainer.transform.localToWorldMatrix);
-        float d = SplineUtility.GetNearestPoint(native, transform.position + new Vector3(inputVector.x * speed * Time.deltaTime, 0f, 0f), out float3 p, out float t);
-        if (d < nearestAfterMovingX.w)
-            nearestAfterMovingX = new float4(p, d);
-        transform.position = nearestAfterMovingX.xyz;
+        transform.position = BaseSplineMovement.GetNextPositionOnSpline(splineContainer, transform.position, inputVector.x * speed);
+
     }
 
     private void GameInput_OnInteractHandler(object sender, System.EventArgs e)
@@ -158,6 +162,9 @@ public class Player : MonoBehaviour
     {
         if (isAlive)
         {
+            isAlive = false;
+            Hide();
+            // spawn PUFF element
             LevelManager.Instance.PlayerKilled();
         }
     }
@@ -167,5 +174,31 @@ public class Player : MonoBehaviour
         isAlive = true;
         transform.position = location.position;
         SetSplineContainer(newSpline);
+        Show();
+    }
+
+    public void LockMovement()
+    {
+        canMove = false;
+    }
+
+    public void AllowMovement()
+    {
+        canMove = true;
+    }
+
+    private void Hide()
+    {
+        gameObject.SetActive(false);
+    }
+
+    private void Show()
+    {
+        gameObject.SetActive(true);
+    }
+
+    public bool IsAlive()
+    {
+        return isAlive;
     }
 }
