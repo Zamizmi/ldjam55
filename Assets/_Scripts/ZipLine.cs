@@ -20,6 +20,7 @@ public class ZipLine : BaseInteractable
     {
         playerToZip = player;
         player.LockMovement();
+        playerToZip.SetSplineContainer(zipSpline);
         zipProgress = 0;
     }
 
@@ -28,6 +29,7 @@ public class ZipLine : BaseInteractable
         if (playerToZip != null)
         {
             MovePlayer();
+            TryJumpFromZip();
         }
     }
 
@@ -38,12 +40,7 @@ public class ZipLine : BaseInteractable
             zipProgress += zipSpeedIncrease;
         }
         float3 nextPoint = zipSpline.Spline.EvaluatePosition(zipProgress);
-        float3 endPoint = zipSpline.Spline.EvaluatePosition(1f);
         playerToZip.gameObject.transform.position = nextPoint;
-        if (Vector3.Distance(playerToZip.gameObject.transform.position, endPoint) <= jumpDistanceToEnd)
-        {
-            ZipCompleted();
-        }
     }
 
     private void ZipCompleted()
@@ -51,6 +48,18 @@ public class ZipLine : BaseInteractable
         playerToZip.SetSplineContainer(endingSpline);
         playerToZip.AllowMovement();
         playerToZip = null;
+    }
 
+    private void TryJumpFromZip()
+    {
+        Vector2 inputVector = GameInput.Instance.GetMovementVectorNormalized();
+        if (inputVector != Vector2.zero)
+        {
+            float3 endPoint = zipSpline.Spline.EvaluatePosition(1f);
+            if (Vector3.Distance(playerToZip.gameObject.transform.position, endPoint) <= jumpDistanceToEnd)
+            {
+                ZipCompleted();
+            }
+        }
     }
 }
