@@ -10,7 +10,7 @@ public class ZipLine : BaseInteractable
     [SerializeField] private SplineContainer startingSpline;
     [SerializeField] private SplineContainer endingSpline;
     [SerializeField] private SplineContainer zipSpline;
-    [SerializeField] private float zipSpeedIncrease = 0.01f;
+    [SerializeField] private float zipSpeedIncrease = 1f;
     [SerializeField] private float zipProgress = 0;
     [SerializeField] private float jumpDistanceToEnd = .5f;
     [SerializeField] private Player playerToZip;
@@ -37,7 +37,7 @@ public class ZipLine : BaseInteractable
     {
         if (zipProgress < 1f)
         {
-            zipProgress += zipSpeedIncrease;
+            zipProgress += zipSpeedIncrease * Time.deltaTime;
         }
         float3 nextPoint = zipSpline.Spline.EvaluatePosition(zipProgress);
         playerToZip.gameObject.transform.position = nextPoint;

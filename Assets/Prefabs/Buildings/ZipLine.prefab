@@ -387,7 +387,7 @@ MonoBehaviour:
   startingSpline: {fileID: 0}
   endingSpline: {fileID: 0}
   zipSpline: {fileID: 5198694845325577761}
-  zipSpeedIncrease: 0.005
+  zipSpeedIncrease: 1
   zipProgress: 0
   jumpDistanceToEnd: 0.5
   playerToZip: {fileID: 0}
