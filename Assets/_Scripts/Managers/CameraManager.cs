@@ -10,12 +10,12 @@ public class CameraManager : MonoBehaviour
 
     private void Start()
     {
-        LevelManager.Instance.OnStateChanged += LevelManager_OnStateChanged;
+        GameLoopManager.Instance.OnStateChanged += LevelManager_OnStateChanged;
     }
 
-    private void LevelManager_OnStateChanged(object sender, LevelManager.OnStateChangedEventArgs e)
+    private void LevelManager_OnStateChanged(object sender, GameLoopManager.OnStateChangedEventArgs e)
     {
-        if (e.changedState == LevelManager.State.GamePlaying)
+        if (e.changedState == GameLoopManager.State.GamePlaying)
         {
             mainMenuCamera.gameObject.SetActive(false);
             pinkCamera.gameObject.SetActive(true);

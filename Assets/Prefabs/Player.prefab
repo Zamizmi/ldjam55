@@ -110,7 +110,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3559330626025997582}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -8.45, y: 1.46, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -132,8 +132,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 1
-  gameInput: {fileID: 0}
-  splineContainer: {fileID: 0}
+  interactableLayerMask:
+    serializedVersion: 2
+    m_Bits: 64
+  levelCreator: {fileID: 0}
+  visualRender: {fileID: 3540719969126859102}
+  selectedInteractable: {fileID: 0}
+  canMove: 1
 --- !u!70 &7793724563853021936
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

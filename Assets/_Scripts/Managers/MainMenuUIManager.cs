@@ -13,7 +13,7 @@ public class MainMenuUIManager : MonoBehaviour
     {
         playButton.onClick.AddListener(() =>
         {
-            LevelManager.Instance.StartGame();
+            GameLoopManager.Instance.StartGame();
             Hide();
         });
 

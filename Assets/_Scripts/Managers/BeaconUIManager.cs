@@ -9,19 +9,19 @@ public class BeaconUIManager : MonoBehaviour
 
     private void Start()
     {
-        LevelManager.Instance.OnBeaconCountChanged += LevelManager_BeaconCountChanged;
-        LevelManager.Instance.OnStateChanged += LevelManager_OnStateChanged;
+        GameLoopManager.Instance.OnBeaconCountChanged += LevelManager_BeaconCountChanged;
+        GameLoopManager.Instance.OnStateChanged += LevelManager_OnStateChanged;
         Hide();
     }
 
     private void LevelManager_BeaconCountChanged(object sender, System.EventArgs e)
     {
-        beaconCount.text = LevelManager.Instance.GetActiveBeaconCount().ToString();
+        beaconCount.text = GameLoopManager.Instance.GetActiveBeaconCount().ToString();
     }
 
     private void LevelManager_OnStateChanged(object sender, System.EventArgs e)
     {
-        if (LevelManager.Instance.IsGameActive() || LevelManager.Instance.IsRespawn())
+        if (GameLoopManager.Instance.IsGameActive() || GameLoopManager.Instance.IsRespawn())
         {
             Show();
         }

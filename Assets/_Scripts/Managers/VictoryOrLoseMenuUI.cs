@@ -1,3 +1,4 @@
+using System;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
@@ -15,19 +16,30 @@ public class VictoryOrLoseMenuUI : MonoBehaviour
 
     private void Start()
     {
-        LevelManager.Instance.OnStateChanged += LevelManager_OnStateChanged;
+        GameLoopManager.Instance.OnStateChanged += LevelManager_OnStateChanged;
         Hide();
+        GameInput.Instance.OnResetAction += GameInput_OnRestart;
+    }
+
+    private void GameInput_OnRestart(object sender, EventArgs e)
+    {
+        RestartGame();
+    }
+
+    private void RestartGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     private void LevelManager_OnStateChanged(object sender, System.EventArgs e)
     {
         Show();
-        if (LevelManager.Instance.IsGameOver())
+        if (GameLoopManager.Instance.IsGameOver())
         {
             loseMode.SetActive(true);
             return;
         }
-        if (LevelManager.Instance.IsGameWon())
+        if (GameLoopManager.Instance.IsGameWon())
         {
             wonMode.SetActive(true);
             return;
@@ -39,7 +51,7 @@ public class VictoryOrLoseMenuUI : MonoBehaviour
     {
         restartButton.onClick.AddListener(() =>
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            RestartGame();
             Hide();
         });
 

@@ -10,6 +10,7 @@ public class GameInput : MonoBehaviour
     public event EventHandler OnInteractHandler;
     public event EventHandler OnPauseAction;
     public event EventHandler OnSelfKillAction;
+    public event EventHandler OnResetAction;
 
 
     private void Awake()
@@ -23,15 +24,17 @@ public class GameInput : MonoBehaviour
 
         // Debugging
         gameInputActions.Player.SelfKill.performed += SelfKill_performed;
+        gameInputActions.Player.Command.performed += Restart_performed;
     }
 
     private void OnDestroy()
     {
         gameInputActions.Player.Interact.performed -= Interact_performed;
-        gameInputActions.Player.Pause.performed -= SelfKill_performed;
+        gameInputActions.Player.SelfKill.performed -= SelfKill_performed;
 
         // Debugging
-        gameInputActions.Player.SelfKill.performed += Pause_performed;
+        gameInputActions.Player.Pause.performed -= Pause_performed;
+        gameInputActions.Player.Command.performed -= Restart_performed;
 
         gameInputActions.Dispose();
     }
@@ -44,6 +47,11 @@ public class GameInput : MonoBehaviour
     private void SelfKill_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
         OnSelfKillAction?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void Restart_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    {
+        OnResetAction?.Invoke(this, EventArgs.Empty);
     }
 
 

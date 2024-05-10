@@ -10,19 +10,19 @@ public class HealthUIManager : MonoBehaviour
 
     private void Start()
     {
-        LevelManager.Instance.OnStateChanged += LevelManager_OnStateChanged;
-        LevelManager.Instance.OnLivesLeftChanged += LevelManager_LivesLeftChanged;
+        GameLoopManager.Instance.OnStateChanged += GameLoopManager_OnStateChanged;
+        GameLoopManager.Instance.OnLivesLeftChanged += GameLoopManager_LivesLeftChanged;
         Hide();
     }
 
-    private void LevelManager_LivesLeftChanged(object sender, System.EventArgs e)
+    private void GameLoopManager_LivesLeftChanged(object sender, System.EventArgs e)
     {
-        livesLeft.text = LevelManager.Instance.GetLivesLeft().ToString();
+        livesLeft.text = GameLoopManager.Instance.GetLivesLeft().ToString();
     }
 
-    private void LevelManager_OnStateChanged(object sender, System.EventArgs e)
+    private void GameLoopManager_OnStateChanged(object sender, System.EventArgs e)
     {
-        if (LevelManager.Instance.IsGameActive() || LevelManager.Instance.IsRespawn())
+        if (GameLoopManager.Instance.IsGameActive() || GameLoopManager.Instance.IsRespawn())
         {
             Show();
         }

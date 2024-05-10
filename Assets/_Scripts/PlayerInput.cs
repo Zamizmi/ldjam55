@@ -62,6 +62,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Command"",
+                    ""type"": ""Button"",
+                    ""id"": ""b8aa6592-fad6-4c29-8c9f-5c663912fce3"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -240,6 +249,17 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""action"": ""SelfKill"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""96f493e9-c8cb-4106-979b-266991dd5df3"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Command"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -252,6 +272,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
         m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
         m_Player_SelfKill = m_Player.FindAction("SelfKill", throwIfNotFound: true);
+        m_Player_Command = m_Player.FindAction("Command", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -317,6 +338,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Interact;
     private readonly InputAction m_Player_Pause;
     private readonly InputAction m_Player_SelfKill;
+    private readonly InputAction m_Player_Command;
     public struct PlayerActions
     {
         private @PlayerInput m_Wrapper;
@@ -325,6 +347,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         public InputAction @Interact => m_Wrapper.m_Player_Interact;
         public InputAction @Pause => m_Wrapper.m_Player_Pause;
         public InputAction @SelfKill => m_Wrapper.m_Player_SelfKill;
+        public InputAction @Command => m_Wrapper.m_Player_Command;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -346,6 +369,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @SelfKill.started += instance.OnSelfKill;
             @SelfKill.performed += instance.OnSelfKill;
             @SelfKill.canceled += instance.OnSelfKill;
+            @Command.started += instance.OnCommand;
+            @Command.performed += instance.OnCommand;
+            @Command.canceled += instance.OnCommand;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -362,6 +388,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @SelfKill.started -= instance.OnSelfKill;
             @SelfKill.performed -= instance.OnSelfKill;
             @SelfKill.canceled -= instance.OnSelfKill;
+            @Command.started -= instance.OnCommand;
+            @Command.performed -= instance.OnCommand;
+            @Command.canceled -= instance.OnCommand;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -385,5 +414,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         void OnInteract(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
         void OnSelfKill(InputAction.CallbackContext context);
+        void OnCommand(InputAction.CallbackContext context);
     }
 }

@@ -12,8 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfb9e304bc31c4380a99e35da1dc6031, type: 3}
   m_Name: Level2
   m_EditorClassIdentifier: 
-  pinkActive: 1
-  purpleActive: 1
-  blackActive: 1
-  pinkObjectsToSpawn:
-  - {fileID: 11400000, guid: 0c6ec4e0c035b4153863d8e5afe81947, type: 2}
+  enemyObjectsToSpawn:
+  - {fileID: 11400000, guid: 66e71db7114734211a8e8c82f8b893f0, type: 2}
+  levelCount: 2

@@ -12,8 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfb9e304bc31c4380a99e35da1dc6031, type: 3}
   m_Name: Level1
   m_EditorClassIdentifier: 
-  pinkObjectsToSpawn:
-  - {fileID: 11400000, guid: ada1b27cdb98b4fe48c214ea2c5b6026, type: 2}
-  enemyObjectsToSpawn:
-  - {fileID: 11400000, guid: 7c9ef813dde3f4b80ba78481dd9b09e6, type: 2}
-  - {fileID: 11400000, guid: f9f101dc44a1a443f9c3c291e3e883a4, type: 2}
+  enemyObjectsToSpawn: []
+  levelCount: 0

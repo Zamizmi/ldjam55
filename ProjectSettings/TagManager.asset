@@ -47,30 +47,27 @@ TagManager:
   - name: Moon
     uniqueID: 3880981155
     locked: 0
-  - name: Pink
+  - name: 1Level
     uniqueID: 4239293325
     locked: 0
-  - name: Pink2
+  - name: 2Level
     uniqueID: 1559691723
     locked: 0
-  - name: Purple
+  - name: 3Level
     uniqueID: 3431850965
     locked: 0
-  - name: Purple2
+  - name: 4Level
     uniqueID: 1443433627
     locked: 0
-  - name: Black
+  - name: 5Level
     uniqueID: 316999009
     locked: 0
   - name: Buildings
     uniqueID: 3592411533
     locked: 0
-  - name: Black2
-    uniqueID: 1997552431
+  - name: Clouds
+    uniqueID: 4209621649
     locked: 0
   - name: Player
     uniqueID: 3025460785
-    locked: 0
-  - name: Clouds
-    uniqueID: 4209621649
     locked: 0

@@ -3,8 +3,6 @@ using Unity.Mathematics;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Splines;
-using Unity.Collections;
 
 public class Player : MonoBehaviour
 {
@@ -24,10 +22,10 @@ public class Player : MonoBehaviour
     }
 
     [SerializeField] private float speed;
-    [SerializeField] private GameInput gameInput;
+    private GameInput gameInput;
     [SerializeField] private LayerMask interactableLayerMask;
-    [SerializeField] private SplineContainer splineContainer;
-    private float interactionDistance = 1.5f;
+    [SerializeField] private LevelEntity activeLevel;
+    private float interactionDistance = 1f;
     [SerializeField] private SpriteRenderer visualRender;
     [SerializeField] private BaseInteractable selectedInteractable;
     private Vector2 lastInteractionVector;
@@ -53,6 +51,7 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
+        gameInput = GameInput.Instance;
         gameInput.OnInteractHandler += GameInput_OnInteractHandler;
         gameInput.OnSelfKillAction += GameInput_OnSelfKillAction;
         animator = GetComponentInChildren<Animator>();
@@ -62,7 +61,7 @@ public class Player : MonoBehaviour
 
     private void HandleInteractions()
     {
-        if (!LevelManager.Instance.IsGameActive()) return;
+        if (!GameLoopManager.Instance.IsGameActive()) return;
         Vector2 inputVector = gameInput.GetMovementVectorNormalized();
         if (inputVector != Vector2.zero)
         {
@@ -106,14 +105,17 @@ public class Player : MonoBehaviour
             animator.SetBool("IsWalking", false);
             return;
         }
-        if (!LevelManager.Instance.IsGameActive()) return;
+        if (!GameLoopManager.Instance.IsGameActive()) return;
         Vector2 inputVector = gameInput.GetMovementVectorNormalized();
-        if (inputVector.x == 0)
+        if (inputVector.x == 0 && animator != null)
         {
             animator.SetBool("IsWalking", false);
             return;
         }
-        animator.SetBool("IsWalking", true);
+        if (animator != null)
+        {
+            animator.SetBool("IsWalking", true);
+        }
         if (lastInteractionVector.x > 0)
         {
             visualRender.flipX = false;
@@ -122,8 +124,7 @@ public class Player : MonoBehaviour
         {
             visualRender.flipX = true;
         }
-        transform.position = BaseSplineMovement.GetNextPositionOnSpline(splineContainer, transform.position, inputVector.x * speed);
-
+        transform.position = BaseSplineMovement.GetNextPositionOnSpline(activeLevel.GetNativeSpline(), transform.position, inputVector.x * speed);
     }
 
     private void GameInput_OnInteractHandler(object sender, System.EventArgs e)
@@ -143,9 +144,9 @@ public class Player : MonoBehaviour
         });
     }
 
-    public void SetSplineContainer(SplineContainer newSpline)
+    public void SetLevelContainer(LevelEntity newLevel)
     {
-        splineContainer = newSpline;
+        activeLevel = newLevel;
     }
 
     public void SetSpriteLevel(int newSpriteLevel)
@@ -153,9 +154,9 @@ public class Player : MonoBehaviour
         visualRender.sortingOrder = newSpriteLevel;
     }
 
-    public SplineContainer GetSplineContainer()
+    public LevelEntity GetLevel()
     {
-        return splineContainer;
+        return activeLevel;
     }
 
     public void Killed()
@@ -166,15 +167,15 @@ public class Player : MonoBehaviour
             isAlive = false;
             Hide();
             // spawn PUFF element
-            LevelManager.Instance.PlayerKilled();
+            GameLoopManager.Instance.PlayerKilled();
         }
     }
 
-    public void Revive(Transform location, SplineContainer newSpline)
+    public void Revive(Transform location, LevelEntity newLevel)
     {
         isAlive = true;
         transform.position = location.position;
-        SetSplineContainer(newSpline);
+        SetLevelContainer(newLevel);
         Show();
     }
 

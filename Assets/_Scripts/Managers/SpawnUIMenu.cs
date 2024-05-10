@@ -16,31 +16,17 @@ public class SpawnUIMenu : MonoBehaviour
 
     private void Awake()
     {
-        pinkButton.onClick.AddListener(() =>
-        {
-            LevelManager.Instance.SpawnPlace(LevelManager.LevelColor.Pink, pinkTransform);
-            Hide();
-        });
-        purpleButton.onClick.AddListener(() =>
-        {
-            LevelManager.Instance.SpawnPlace(LevelManager.LevelColor.Purple, purpleTransform);
-            Hide();
-        });
-        blackButton.onClick.AddListener(() =>
-        {
-            LevelManager.Instance.SpawnPlace(LevelManager.LevelColor.Black, blackTransform);
-            Hide();
-        });
+
     }
     private void Start()
     {
-        LevelManager.Instance.OnStateChanged += LevelManager_OnStateChanged;
+        GameLoopManager.Instance.OnStateChanged += LevelManager_OnStateChanged;
         Hide();
     }
 
-    private void LevelManager_OnStateChanged(object sender, LevelManager.OnStateChangedEventArgs e)
+    private void LevelManager_OnStateChanged(object sender, GameLoopManager.OnStateChangedEventArgs e)
     {
-        if (LevelManager.Instance.IsRespawn())
+        if (GameLoopManager.Instance.IsRespawn())
         {
             Show();
         }
@@ -53,6 +39,11 @@ public class SpawnUIMenu : MonoBehaviour
     private void Hide()
     {
         gameObject.SetActive(false);
+    }
+
+    private void AddSpawnForLevel(LevelEntity levelEntity)
+    {
+        GameLoopManager.Instance.SpawnPlace(levelEntity, blackTransform);
     }
 
     private void Show()
